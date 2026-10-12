@@ -1,0 +1,70 @@
+[gd_scene format=3 uid="uid://cmg0tv7c4opyk"]
+
+[ext_resource type="Script" uid="uid://bk4ba74bdckxk" path="res://Scripts/enemy.gd" id="1_hb8ge"]
+[ext_resource type="Texture2D" uid="uid://dhs3kitgeo6y2" path="res://Assets/Lava_slime/Slime1.png" id="1_wujgv"]
+[ext_resource type="Texture2D" uid="uid://clqox77qwlmpn" path="res://Assets/Lava_slime/Slime2.png" id="2_hb8ge"]
+[ext_resource type="Texture2D" uid="uid://cib8k25bb1f6k" path="res://Assets/Lava_slime/Slime3.png" id="3_e1ltt"]
+[ext_resource type="Texture2D" uid="uid://dl724wp66wji8" path="res://Assets/Lava_slime/Slime4.png" id="4_dxifv"]
+[ext_resource type="Texture2D" uid="uid://cywg7582k7xvv" path="res://Assets/Lava_slime/Slime5.png" id="5_pwjut"]
+[ext_resource type="Texture2D" uid="uid://wk52webl3vt5" path="res://Assets/Lava_slime/Slime6.png" id="6_n0g06"]
+[ext_resource type="Texture2D" uid="uid://cfnimrtxxuraj" path="res://Assets/Lava_slime/Slime7.png" id="7_ar8e5"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_57tfu"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_wujgv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_hb8ge")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_e1ltt")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_dxifv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_pwjut")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_n0g06")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_ar8e5")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_57tfu"]
+radius = 118.03813
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_3j7xw"]
+radius = 14.3178215
+
+[node name="enemy" type="CharacterBody2D" unique_id=1902526779]
+script = ExtResource("1_hb8ge")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1155198119]
+position = Vector2(-3.8146973e-06, 1.9073486e-06)
+scale = Vector2(1.515625, 1.515625)
+sprite_frames = SubResource("SpriteFrames_57tfu")
+frame_progress = 0.23450689
+offset = Vector2(0, -8)
+
+[node name="Area_2D" type="Area2D" parent="." unique_id=819628196]
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area_2D" unique_id=1711228054]
+position = Vector2(0, 1)
+shape = SubResource("CircleShape2D_57tfu")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=250241055]
+position = Vector2(0, 3)
+shape = SubResource("CircleShape2D_3j7xw")
+
+[connection signal="body_entered" from="Area_2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="body_exited" from="Area_2D" to="." method="_on_area_2d_body_exited"]
