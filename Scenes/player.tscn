@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://clkmv7ex0iqvd" path="res://Assets/Player.png" id="2_cvnsp"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_57tfu"]
-size = Vector2(26, 75)
+size = Vector2(8, 26)
 
 [node name="Player" type="Node2D" unique_id=1015974641]
 
@@ -13,10 +13,9 @@ collision_layer = 3
 script = ExtResource("1_cvnsp")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player" unique_id=566369290]
-position = Vector2(1, 5.5)
+position = Vector2(0, 1)
 shape = SubResource("RectangleShape2D_57tfu")
 
 [node name="Sprite2D" type="Sprite2D" parent="Player" unique_id=1159306855]
-position = Vector2(-7.6293945e-06, 7.6293945e-06)
-scale = Vector2(0.05800361, 0.058003616)
+scale = Vector2(0.020009007, 0.020009011)
 texture = ExtResource("2_cvnsp")

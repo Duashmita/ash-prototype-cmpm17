@@ -9,7 +9,9 @@ func _physics_process(delta):
 		position += (player.position- position)/speed
 		$AnimatedSprite2D.play("default")
 	else:
-		$AnimatedSprite2D.animation_finished
+		$AnimatedSprite2D.stop()
+		$AnimatedSprite2D.frame = 0
+		 
 		
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	player = body
