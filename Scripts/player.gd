@@ -1,7 +1,10 @@
 extends CharacterBody2D
+class_name Player
+
 @export var speed: float = 200.0
 @export var acceleration: float = 0.05
 @export var deceleration: float = 0.08
+
 
 func _physics_process(delta: float) -> void:
 	get_input()
