@@ -1,6 +1,6 @@
 [gd_scene format=4 uid="uid://dye02qwnb8f4w"]
 
-[ext_resource type="Script" uid="uid://llbpokefh3kj" path="res://Scripts/level_1.gd" id="1_1q6tm"]
+[ext_resource type="Script" uid="uid://ck3xbj0u3kh7o" path="res://Scripts/level_2.gd" id="1_1q6tm"]
 [ext_resource type="Texture2D" uid="uid://cum0utqdmprcq" path="res://Assets/castlet.png" id="2_v36qu"]
 [ext_resource type="PackedScene" uid="uid://c2tw41mf35rcf" path="res://Scenes/player.tscn" id="3_cggpd"]
 [ext_resource type="PackedScene" uid="uid://cmg0tv7c4opyk" path="res://Scenes/enemy.tscn" id="4_055b2"]
@@ -82,7 +82,7 @@ sources/0 = SubResource("TileSetAtlasSource_wrinw")
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_57tfu"]
 size = Vector2(16, 16)
 
-[node name="Level_1" type="Node2D" unique_id=1053140699]
+[node name="Level_2" type="Node2D" unique_id=1053140699]
 script = ExtResource("1_1q6tm")
 
 [node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=182161754]

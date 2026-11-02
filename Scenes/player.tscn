@@ -16,7 +16,6 @@ script = ExtResource("1_cvnsp")
 scale = Vector2(0.6350045, 0.63500464)
 texture = ExtResource("2_cvnsp")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Player/Sprite2D" unique_id=566369290]
-position = Vector2(-0.787396, 0)
-scale = Vector2(1.574792, 1.5747917)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player" unique_id=566369290]
+position = Vector2(-0.5, 0)
 shape = SubResource("RectangleShape2D_57tfu")

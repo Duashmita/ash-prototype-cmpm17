@@ -1,0 +1,69 @@
+[gd_scene format=3 uid="uid://j64qd2rbonks"]
+
+[ext_resource type="Script" uid="uid://pva766p1g3yf" path="res://Scripts/firefly.gd" id="1_d6ncm"]
+[ext_resource type="Texture2D" uid="uid://cwuysxuavbr7a" path="res://Assets/firefly.png" id="2_wh1ru"]
+[ext_resource type="Texture2D" uid="uid://cqu2iuulgc5w1" path="res://Assets/Chest.png" id="3_wh1ru"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_xp2st"]
+radius = 3.5226567
+height = 10.978517
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cgv3b"]
+atlas = ExtResource("3_wh1ru")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_57tfu"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_wh1ru")
+}],
+"loop": 1,
+"name": &"flying",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cgv3b")
+}],
+"loop": 1,
+"name": &"pop",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_57tfu"]
+radius = 11.0
+
+[node name="Firefly" type="CharacterBody2D" unique_id=763624526]
+script = ExtResource("1_d6ncm")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=330426310]
+position = Vector2(3.8146973e-06, 2.861023e-06)
+rotation = -2.3130348
+scale = Vector2(0.802178, -0.77217907)
+shape = SubResource("CapsuleShape2D_xp2st")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=602133592]
+position = Vector2(0, -1.1920929e-07)
+rotation = 0.092935026
+scale = Vector2(0.45647654, 0.45647654)
+sprite_frames = SubResource("SpriteFrames_57tfu")
+animation = &"pop"
+frame_progress = 0.24744353
+
+[node name="Area2D2" type="Area2D" parent="." unique_id=1291512818]
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Area2D2" unique_id=631708657]
+shape = SubResource("CircleShape2D_57tfu")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=1250106357]
+
+[node name="Bee" type="CollisionShape2D" parent="Area2D" unique_id=2106367857]
+position = Vector2(3.8146973e-06, 2.861023e-06)
+rotation = -2.3130348
+scale = Vector2(0.8021781, -0.77217907)
+shape = SubResource("CapsuleShape2D_xp2st")
+
+[connection signal="body_entered" from="Area2D2" to="." method="_on_area_2d_2_body_entered"]
+[connection signal="body_exited" from="Area2D2" to="." method="_on_area_2d_2_body_exited"]
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
