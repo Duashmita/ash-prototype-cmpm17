@@ -7,7 +7,7 @@ var inventory: int = 0
 
 func _physics_process(delta):
 	if player_avoid:
-		position += (player.position- position)/speed
+		position += (player.global_position+ global_position)/speed
 		$AnimatedSprite2D.play("flying")
 	else:
 		pass

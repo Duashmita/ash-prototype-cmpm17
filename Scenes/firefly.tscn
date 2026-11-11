@@ -48,8 +48,23 @@ position = Vector2(0, -1.1920929e-07)
 rotation = 0.092935026
 scale = Vector2(0.45647654, 0.45647654)
 sprite_frames = SubResource("SpriteFrames_57tfu")
-animation = &"pop"
-frame_progress = 0.24744353
+animation = &"flying"
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="AnimatedSprite2D" unique_id=1404813267]
+amount = 4
+lifetime = 9.9
+explosiveness = 0.15
+emission_shape = 1
+emission_sphere_radius = 9.0
+spread = 74.25
+gravity = Vector2(0, 70)
+initial_velocity_min = 4.17
+initial_velocity_max = 33.33
+linear_accel_min = -30.0
+linear_accel_max = -30.0
+scale_amount_min = 19.67
+scale_amount_max = 19.67
+color = Color(1, 0.69411767, 0.101960786, 0.5803922)
 
 [node name="Area2D2" type="Area2D" parent="." unique_id=1291512818]
 

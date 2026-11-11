@@ -7,7 +7,7 @@ var player = null
 
 func _physics_process(delta):
 	if player_chase:
-		position += (player.position- position)/speed
+		position += (player.global_position - global_position)/speed
 		$AnimatedSprite2D.play("default")
 	else:
 		$AnimatedSprite2D.stop()
