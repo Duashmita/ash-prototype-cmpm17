@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://pva766p1g3yf" path="res://Scripts/firefly.gd" id="1_d6ncm"]
 [ext_resource type="Texture2D" uid="uid://cwuysxuavbr7a" path="res://Assets/firefly.png" id="2_wh1ru"]
 [ext_resource type="Texture2D" uid="uid://cqu2iuulgc5w1" path="res://Assets/Chest.png" id="3_wh1ru"]
+[ext_resource type="Texture2D" uid="uid://crwd4giqafb5l" path="res://Scripts/light.png" id="4_cgv3b"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_xp2st"]
 radius = 3.5226567
@@ -78,6 +79,9 @@ position = Vector2(3.8146973e-06, 2.861023e-06)
 rotation = -2.3130348
 scale = Vector2(0.8021781, -0.77217907)
 shape = SubResource("CapsuleShape2D_xp2st")
+
+[node name="PointLight2D" type="PointLight2D" parent="." unique_id=1059185867]
+texture = ExtResource("4_cgv3b")
 
 [connection signal="body_entered" from="Area2D2" to="." method="_on_area_2d_2_body_entered"]
 [connection signal="body_exited" from="Area2D2" to="." method="_on_area_2d_2_body_exited"]

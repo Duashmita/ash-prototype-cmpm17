@@ -21,6 +21,6 @@ func get_input() -> void:
 	elif Input.is_action_pressed("W"):
 		velocity.y = lerp(velocity.y, -speed, acceleration)
 	else:
-		velocity.y = lerp(velocity.x, 0.0, acceleration)
+		velocity.y = lerp(velocity.y, 0.0, acceleration)
 		
 	move_and_slide()

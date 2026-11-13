@@ -115,4 +115,7 @@ position = Vector2(36, 68)
 position = Vector2(72.000015, 40.999996)
 rotation = -1.196799
 
+[node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=473188959]
+color = Color(0.13137859, 0.13137859, 0.13137859, 1)
+
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
