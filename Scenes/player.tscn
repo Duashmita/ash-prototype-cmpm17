@@ -2,6 +2,41 @@
 
 [ext_resource type="Script" uid="uid://7jyb6730cfod" path="res://Scripts/player.gd" id="1_cvnsp"]
 [ext_resource type="Texture2D" uid="uid://cwofetrxj5xkj" path="res://Assets/Player.png" id="2_cvnsp"]
+[ext_resource type="Texture2D" uid="uid://dmpn8i35w6nox" path="res://Assets/Player2.png" id="walk_2"]
+[ext_resource type="Texture2D" uid="uid://wp3p3jq46fww" path="res://Assets/Player3.png" id="walk_3"]
+[ext_resource type="Texture2D" uid="uid://c6n7jiqk2or0r" path="res://Assets/Player4.png" id="walk_4"]
+[ext_resource type="Texture2D" uid="uid://bmvi574lk116g" path="res://Assets/Player5.png" id="walk_5"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_player"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_cvnsp")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_cvnsp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("walk_2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("walk_3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("walk_4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("walk_5")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 8.0
+}]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_57tfu"]
 size = Vector2(9, 20)
@@ -12,10 +47,50 @@ size = Vector2(9, 20)
 collision_layer = 3
 script = ExtResource("1_cvnsp")
 
-[node name="Sprite2D" type="Sprite2D" parent="Player" unique_id=1159306855]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Player" unique_id=1159306855]
 scale = Vector2(0.6350045, 0.63500464)
-texture = ExtResource("2_cvnsp")
+sprite_frames = SubResource("SpriteFrames_player")
+animation = &"idle"
+autoplay = "idle"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player" unique_id=566369290]
 position = Vector2(-0.5, 0)
 shape = SubResource("RectangleShape2D_57tfu")
+
+[node name="Camera2D" type="Camera2D" parent="Player" unique_id=1730021843]
+zoom = Vector2(4, 4)
+position_smoothing_enabled = true
+position_smoothing_speed = 8.0
+
+[node name="HUD" type="CanvasLayer" parent="Player" unique_id=1730021844]
+visible = false
+
+[node name="FireflyCount" type="Label" parent="Player/HUD" unique_id=1730021845]
+offset_left = 16.0
+offset_top = 12.0
+offset_right = 260.0
+offset_bottom = 44.0
+theme_override_colors/font_color = Color(1, 0.85, 0.35, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_font_sizes/font_size = 24
+text = "Fireflies: 0"
+
+[node name="Hint" type="Label" parent="Player/HUD" unique_id=1730021846]
+visible = false
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -300.0
+offset_top = -70.0
+offset_right = 300.0
+offset_bottom = -30.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_font_sizes/font_size = 22
+horizontal_alignment = 1

@@ -32,9 +32,6 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_57tfu"]
-radius = 11.0
-
 [node name="Firefly" type="CharacterBody2D" unique_id=763624526]
 script = ExtResource("1_d6ncm")
 
@@ -53,6 +50,7 @@ animation = &"flying"
 
 [node name="CPUParticles2D" type="CPUParticles2D" parent="AnimatedSprite2D" unique_id=1404813267]
 amount = 4
+texture = ExtResource("4_cgv3b")
 lifetime = 9.9
 explosiveness = 0.15
 emission_shape = 1
@@ -63,14 +61,9 @@ initial_velocity_min = 4.17
 initial_velocity_max = 33.33
 linear_accel_min = -30.0
 linear_accel_max = -30.0
-scale_amount_min = 19.67
-scale_amount_max = 19.67
+scale_amount_min = 0.05
+scale_amount_max = 0.05
 color = Color(1, 0.69411767, 0.101960786, 0.5803922)
-
-[node name="Area2D2" type="Area2D" parent="." unique_id=1291512818]
-
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="Area2D2" unique_id=631708657]
-shape = SubResource("CircleShape2D_57tfu")
 
 [node name="Area2D" type="Area2D" parent="." unique_id=1250106357]
 
@@ -82,7 +75,3 @@ shape = SubResource("CapsuleShape2D_xp2st")
 
 [node name="PointLight2D" type="PointLight2D" parent="." unique_id=1059185867]
 texture = ExtResource("4_cgv3b")
-
-[connection signal="body_entered" from="Area2D2" to="." method="_on_area_2d_2_body_entered"]
-[connection signal="body_exited" from="Area2D2" to="." method="_on_area_2d_2_body_exited"]
-[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]

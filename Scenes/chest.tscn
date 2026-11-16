@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bs5hymenpuq33"]
 
-[ext_resource type="Script" uid="uid://i38sbsw4t82d" path="res://Scenes/chest.gd" id="1_cjfl1"]
+[ext_resource type="Script" uid="uid://i38sbsw4t82d" path="res://Scripts/chest.gd" id="1_cjfl1"]
 [ext_resource type="Texture2D" uid="uid://cqu2iuulgc5w1" path="res://Assets/Chest.png" id="1_lyb87"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_cjfl1"]
@@ -48,4 +48,3 @@ position = Vector2(8, 15)
 shape = SubResource("CircleShape2D_3j7xw")
 
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
-[connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]
