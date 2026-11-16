@@ -74,8 +74,7 @@ func _scout(player: Player, delta: float) -> void:
 	if route_age <= 0.0:
 		route_age = 0.5
 		var level := Level.of(self)
-		var goal = level.current_goal(player.feet())
-		route = level.find_path(player.feet(), goal) if goal != null else PackedVector2Array()
+		route = level.find_path(player.feet(), level.current_goal())
 	if route.size() <= 1:
 		_fly_to(player.global_position + Vector2(0, -14), SPEED, delta)
 	else:

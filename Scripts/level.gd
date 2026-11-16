@@ -12,12 +12,16 @@ const CLIFF_TILES: Array[Vector2i] = [
 const DIRS: Array[Vector2i] = [Vector2i.RIGHT, Vector2i.LEFT, Vector2i.DOWN, Vector2i.UP]
 
 var layers: Array[TileMapLayer] = []
+var chest: Chest
 
 
 func _enter_tree() -> void:
 	layers.clear()
 	for node in find_children("*", "TileMapLayer"):
 		layers.append(node)
+	for node in get_children():
+		if node is Chest:
+			chest = node
 
 
 static func of(node: Node) -> Level:
@@ -29,7 +33,7 @@ static func of(node: Node) -> Level:
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if not body is Player:
 		return
-	if get_tree().get_nodes_in_group("chests").any(func(c): return not c.is_open):
+	if chest and not chest.is_open:
 		body.show_hint("Not yet... follow the firefly to the chest.")
 	elif next_scene.is_empty():
 		body.show_hint("You made it out!", 5.0)
@@ -97,16 +101,10 @@ func hop_target(cell: Vector2i, facing: Vector2i, side: int = 1) -> Vector2i:
 	return cell
 
 
-func current_goal(from: Vector2) -> Variant:
-	var best: Variant = null
-	for chest in get_tree().get_nodes_in_group("chests"):
-		if not chest.is_open:
-			var pos: Vector2 = chest.center()
-			if best == null or from.distance_to(pos) < from.distance_to(best):
-				best = pos
-	if best == null and has_node("Area2D/CollisionShape2D"):
-		best = $Area2D/CollisionShape2D.global_position
-	return best
+func current_goal() -> Vector2:
+	if chest and not chest.is_open:
+		return chest.center()
+	return $Area2D/CollisionShape2D.global_position
 
 
 func find_path(from: Vector2, to: Vector2) -> PackedVector2Array:

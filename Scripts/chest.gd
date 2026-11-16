@@ -8,29 +8,33 @@ const FIREFLY_SCENE := preload("res://Scenes/firefly.tscn")
 
 var is_open := false
 
-
-func _ready() -> void:
-	add_to_group("chests")
-	$AnimatedSprite2D.play("Close")
-
-
+## position of text to get fireflies to burst out
 func center() -> Vector2:
 	return $Area2D/CollisionShape2D.global_position
 
-
+## open chest when colliding with player
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if body is Player and not is_open:
 		is_open = true
 		open.call_deferred(body)
 
-
+## functions to do when chests open
 func open(player: Player) -> void:
 	$AnimatedSprite2D.play("Open")
+	
+	## prints hint
 	player.show_hint("The chest bursts open! Catch the fireflies!")
+	
+	## releases the firefly who guides you there
 	for guide in get_tree().get_nodes_in_group("guide_fireflies"):
 		guide.release()
+		
+	## saves the node in the level 
 	var level := Level.of(self)
+	
+	## creates 10 fireflies (or as specified above)
 	for i in firefly_count:
+		
 		var firefly: Firefly = FIREFLY_SCENE.instantiate()
 		firefly.state = Firefly.State.BURST
 		level.add_child(firefly)
