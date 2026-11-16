@@ -35,20 +35,31 @@ func open(player: Player) -> void:
 	## creates 10 fireflies (or as specified above)
 	for i in firefly_count:
 		
+		## makes a new firefly from the firefly scene
 		var firefly: Firefly = FIREFLY_SCENE.instantiate()
 		firefly.state = Firefly.State.BURST
+
+		## adds it to the level and puts it at the chest
 		level.add_child(firefly)
 		firefly.global_position = center()
+
+		## flies it out to its spot, fast -> slow
 		var tween := firefly.create_tween()
 		tween.tween_property(firefly, "global_position", _scatter_point(level, i), 0.6) \
 			.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+
+		## when it lands, it becomes a normal firefly that can be caught
 		tween.tween_callback(firefly.release)
 
-
+## picks where firefly number i lands around the chest
 func _scatter_point(level: Level, i: int) -> Vector2:
+	
 	var angle := TAU * i / maxi(firefly_count, 1)
+
 	for attempt in 12:
 		var p := center() + Vector2.from_angle(angle + randf_range(-0.4, 0.4)) * randf_range(burst_radius * 0.4, burst_radius)
+
 		if level.is_floor(p):
 			return p
+
 	return center()

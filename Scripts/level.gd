@@ -1,20 +1,26 @@
 extends Node2D
 class_name Level
 
+## scene to load when you reach the exit (empty = last level)
 @export_file("*.tscn") var next_scene: String
+## hint shown when the level starts
 @export_multiline var start_hint: String
+## how far a hop can reach
 @export var max_hop_tiles: int = 3
 
+## cliff wall tiles, which don't count as floor
 const CLIFF_TILES: Array[Vector2i] = [
 	Vector2i(6, 0), Vector2i(6, 1), Vector2i(6, 2),
 	Vector2i(7, 0), Vector2i(7, 1), Vector2i(7, 2),
 ]
+## right, left, down, up
 const DIRS: Array[Vector2i] = [Vector2i.RIGHT, Vector2i.LEFT, Vector2i.DOWN, Vector2i.UP]
 
 var layers: Array[TileMapLayer] = []
 var chest: Chest
 
 
+## finds the tile layers and the chest before anything else runs
 func _enter_tree() -> void:
 	layers.clear()
 	for node in find_children("*", "TileMapLayer"):
@@ -24,12 +30,14 @@ func _enter_tree() -> void:
 			chest = node
 
 
+## walks up from any node until it finds the level it's in
 static func of(node: Node) -> Level:
 	while node != null and not node is Level:
 		node = node.get_parent()
 	return node
 
 
+## exit: blocked until the chest is open, then goes to the next level
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if not body is Player:
 		return
@@ -41,14 +49,17 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 		get_tree().change_scene_to_file.call_deferred(next_scene)
 
 
+## world position -> tile
 func cell_at(world: Vector2) -> Vector2i:
 	return layers[0].local_to_map(layers[0].to_local(world))
 
 
+## tile -> world position of its center
 func cell_center(cell: Vector2i) -> Vector2:
 	return layers[0].to_global(layers[0].map_to_local(cell))
 
 
+## true if there's a walkable tile at this spot
 func is_floor(world: Vector2) -> bool:
 	for layer in layers:
 		var c := layer.local_to_map(layer.to_local(world))
@@ -57,10 +68,12 @@ func is_floor(world: Vector2) -> bool:
 	return false
 
 
+## same, but for a tile
 func is_floor_cell(cell: Vector2i) -> bool:
 	return is_floor(cell_center(cell))
 
 
+## the rectangle covering every tile in the level (used for the camera)
 func bounds() -> Rect2:
 	var rect := Rect2()
 	for layer in layers:
@@ -71,10 +84,12 @@ func bounds() -> Rect2:
 	return rect
 
 
+## you can only hop when the tile in front isn't floor (there's a gap)
 func can_hop(cell: Vector2i, dir: Vector2i) -> bool:
 	return not is_floor_cell(cell + dir)
 
 
+## first floor tile across the gap, up to max_hop_tiles away. side shifts one tile left/right for staggered stones
 func hop_landing(cell: Vector2i, dir: Vector2i, side: int) -> Variant:
 	if not can_hop(cell, dir):
 		return null
@@ -86,6 +101,7 @@ func hop_landing(cell: Vector2i, dir: Vector2i, side: int) -> Variant:
 	return null
 
 
+## where Space takes you. diagonals try the sideways stones first. returns the same tile if there's nowhere to go
 func hop_target(cell: Vector2i, facing: Vector2i, side: int = 1) -> Vector2i:
 	var tries: Array = []
 	if facing.x != 0 and facing.y != 0:
@@ -101,12 +117,14 @@ func hop_target(cell: Vector2i, facing: Vector2i, side: int = 1) -> Vector2i:
 	return cell
 
 
+## the chest until it's open, then the exit
 func current_goal() -> Vector2:
 	if chest and not chest.is_open:
 		return chest.center()
 	return $Area2D/CollisionShape2D.global_position
 
 
+## shortest route between two spots, walking or hopping (used by sent fireflies)
 func find_path(from: Vector2, to: Vector2) -> PackedVector2Array:
 	var start := cell_at(from)
 	var goal := cell_at(to)
@@ -122,9 +140,11 @@ func find_path(from: Vector2, to: Vector2) -> PackedVector2Array:
 			for side in [0, 1, -1]:
 				nexts.append(hop_landing(cell, dir, side))
 		for next in nexts:
-			if next != null and not came_from.has(next) and area.has_point(cell_center(next)):
+			## keeps new tiles that are inside the level
+		if next != null and not came_from.has(next) and area.has_point(cell_center(next)):
 				came_from[next] = cell
 				queue.append(next)
+	## walks back from the goal to build the path
 	var path := PackedVector2Array()
 	if came_from.has(goal):
 		var step := goal
