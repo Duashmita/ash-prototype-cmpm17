@@ -8,27 +8,18 @@ class_name Level
 ## how far a hop can reach
 @export var max_hop_tiles: int = 3
 
-## cliff wall tiles, which don't count as floor
-const CLIFF_TILES: Array[Vector2i] = [
-	Vector2i(6, 0), Vector2i(6, 1), Vector2i(6, 2),
-	Vector2i(7, 0), Vector2i(7, 1), Vector2i(7, 2),
-]
-## right, left, down, up
+## right, left, down, up for firefly pathfinder
 const DIRS: Array[Vector2i] = [Vector2i.RIGHT, Vector2i.LEFT, Vector2i.DOWN, Vector2i.UP]
 
 var layers: Array[TileMapLayer] = []
 var chest: Chest
 
-
-## finds the tile layers and the chest before anything else runs
+## finds the tile layers and the chest before anything else runs for the firefly path finding
 func _enter_tree() -> void:
-	layers.clear()
-	for node in find_children("*", "TileMapLayer"):
-		layers.append(node)
+	layers.assign(find_children("*", "TileMapLayer"))
 	for node in get_children():
 		if node is Chest:
 			chest = node
-
 
 ## walks up from any node until it finds the level it's in
 static func of(node: Node) -> Level:
@@ -62,8 +53,9 @@ func cell_center(cell: Vector2i) -> Vector2:
 ## true if there's a walkable tile at this spot
 func is_floor(world: Vector2) -> bool:
 	for layer in layers:
-		var c := layer.local_to_map(layer.to_local(world))
-		if layer.get_cell_source_id(c) != -1 and not CLIFF_TILES.has(layer.get_cell_atlas_coords(c)):
+		## cliff tiles are marked with "cliff" custom data in the tileset
+		var tile := layer.get_cell_tile_data(layer.local_to_map(layer.to_local(world)))
+		if tile and not tile.get_custom_data("cliff"):
 			return true
 	return false
 
@@ -84,14 +76,10 @@ func bounds() -> Rect2:
 	return rect
 
 
-## you can only hop when the tile in front isn't floor (there's a gap)
-func can_hop(cell: Vector2i, dir: Vector2i) -> bool:
-	return not is_floor_cell(cell + dir)
-
-
 ## first floor tile across the gap, up to max_hop_tiles away. side shifts one tile left/right for staggered stones
+## no gap in front = no hop
 func hop_landing(cell: Vector2i, dir: Vector2i, side: int) -> Variant:
-	if not can_hop(cell, dir):
+	if is_floor_cell(cell + dir):
 		return null
 	var perp := Vector2i(-dir.y, dir.x)
 	for n in range(1, max_hop_tiles + 1):
@@ -128,7 +116,6 @@ func current_goal() -> Vector2:
 func find_path(from: Vector2, to: Vector2) -> PackedVector2Array:
 	var start := cell_at(from)
 	var goal := cell_at(to)
-	var area := bounds()
 	var came_from := {start: start}
 	var queue: Array[Vector2i] = [start]
 	while not queue.is_empty() and not came_from.has(goal):
@@ -140,8 +127,7 @@ func find_path(from: Vector2, to: Vector2) -> PackedVector2Array:
 			for side in [0, 1, -1]:
 				nexts.append(hop_landing(cell, dir, side))
 		for next in nexts:
-			## keeps new tiles that are inside the level
-		if next != null and not came_from.has(next) and area.has_point(cell_center(next)):
+			if next != null and not came_from.has(next):
 				came_from[next] = cell
 				queue.append(next)
 	## walks back from the goal to build the path
@@ -149,7 +135,8 @@ func find_path(from: Vector2, to: Vector2) -> PackedVector2Array:
 	if came_from.has(goal):
 		var step := goal
 		while step != start:
-			path.insert(0, cell_center(step))
+			path.append(cell_center(step))
 			step = came_from[step]
-		path.insert(0, cell_center(start))
+		path.append(cell_center(start))
+		path.reverse()
 	return path

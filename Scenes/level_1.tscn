@@ -14,19 +14,25 @@ texture = ExtResource("2_6444e")
 2:0/0 = 0
 4:0/0 = 0
 6:0/0 = 0
+6:0/0/custom_data_0 = true
 7:0/0 = 0
+7:0/0/custom_data_0 = true
 0:1/0 = 0
 1:1/0 = 0
 2:1/0 = 0
 4:1/0 = 0
 6:1/0 = 0
+6:1/0/custom_data_0 = true
 7:1/0 = 0
+7:1/0/custom_data_0 = true
 0:2/0 = 0
 1:2/0 = 0
 2:2/0 = 0
 4:2/0 = 0
 6:2/0 = 0
+6:2/0/custom_data_0 = true
 7:2/0 = 0
+7:2/0/custom_data_0 = true
 0:4/0 = 0
 1:4/0 = 0
 2:4/0 = 0
@@ -42,6 +48,8 @@ texture = ExtResource("2_6444e")
 7:7/0 = 0
 
 [sub_resource type="TileSet" id="TileSet_nuewp"]
+custom_data_layer_0/name = "cliff"
+custom_data_layer_0/type = 1
 physics_layer_0/collision_layer = 1
 sources/1 = SubResource("TileSetAtlasSource_xrdnt")
 
@@ -52,19 +60,25 @@ texture = ExtResource("2_6444e")
 2:0/0 = 0
 4:0/0 = 0
 6:0/0 = 0
+6:0/0/custom_data_0 = true
 7:0/0 = 0
+7:0/0/custom_data_0 = true
 0:1/0 = 0
 1:1/0 = 0
 2:1/0 = 0
 4:1/0 = 0
 6:1/0 = 0
+6:1/0/custom_data_0 = true
 7:1/0 = 0
+7:1/0/custom_data_0 = true
 0:2/0 = 0
 1:2/0 = 0
 2:2/0 = 0
 4:2/0 = 0
 6:2/0 = 0
+6:2/0/custom_data_0 = true
 7:2/0 = 0
+7:2/0/custom_data_0 = true
 0:4/0 = 0
 1:4/0 = 0
 2:4/0 = 0
@@ -80,6 +94,8 @@ texture = ExtResource("2_6444e")
 7:7/0 = 0
 
 [sub_resource type="TileSet" id="TileSet_xp2st"]
+custom_data_layer_0/name = "cliff"
+custom_data_layer_0/type = 1
 sources/0 = SubResource("TileSetAtlasSource_wrinw")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_57tfu"]

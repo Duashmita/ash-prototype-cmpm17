@@ -28,10 +28,9 @@ func _ready() -> void:
 	add_to_group("player")
 	level = Level.of(self)
 	$HUD.visible = true
-	if level:
-		_fit_camera(level.bounds())
-		if not level.start_hint.is_empty():
-			show_hint(level.start_hint, 5.0)
+	_fit_camera(level.bounds())
+	if level.start_hint:
+		show_hint(level.start_hint, 5.0)
 
 
 ## updates the firefly counter
@@ -47,17 +46,18 @@ func _unhandled_input(event: InputEvent) -> void:
 
 ## reads WASD, shows the hop hint near a gap, then hops or walks and animates
 func _physics_process(_delta: float) -> void:
-	var held := Vector2i(signi(int(Input.get_axis("A", "D"))), signi(int(Input.get_axis("W", "S"))))
-	if held != Vector2i.ZERO:
+	var held := Vector2i(Input.get_vector("A", "D", "W", "S").sign())
+	if held:
 		facing = held
-	if not hop_hint_shown and level and level.hop_target(level.cell_at(feet()), facing) != level.cell_at(feet()):
+	var cell := level.cell_at(feet())
+	if not hop_hint_shown and level.hop_target(cell, facing) != cell:
 		hop_hint_shown = true
 		show_hint("Space: hop the gap")
 	if Input.is_action_just_pressed("jump"):
 		hop()
 	else:
 		walk(Vector2(held))
-	sprite.play("walk" if held != Vector2i.ZERO else "idle")
+	sprite.play("walk" if held else "idle")
 	if held.x != 0:
 		sprite.flip_h = held.x < 0
 
@@ -67,7 +67,7 @@ func walk(dir: Vector2) -> void:
 	velocity = velocity.lerp(dir * speed, acceleration)
 	var before := global_position
 	move_and_slide()
-	if level and not on_floor(global_position) and on_floor(before):
+	if not on_floor(global_position) and on_floor(before):
 		for slide in [Vector2(global_position.x, before.y), Vector2(before.x, global_position.y), before]:
 			if on_floor(slide):
 				global_position = slide
@@ -77,8 +77,6 @@ func walk(dir: Vector2) -> void:
 
 ## Space: jumps to the tile across the gap
 func hop() -> void:
-	if not level:
-		return
 	var cell := level.cell_at(feet())
 	## which half of the tile you're on, so staggered stones pick the closer side
 	var side := 1 if (feet() - level.cell_center(cell)).dot(Vector2(-facing.y, facing.x)) >= 0 else -1
@@ -125,12 +123,10 @@ func _fit_camera(area: Rect2) -> void:
 	camera.zoom = Vector2.ONE * camera_zoom
 	var view := get_viewport_rect().size / camera.zoom
 	var rect := area
-	if area.size.x < view.x:
-		rect.position.x = area.get_center().x - view.x / 2
-		rect.size.x = view.x
-	if area.size.y < view.y:
-		rect.position.y = area.get_center().y - view.y / 2
-		rect.size.y = view.y
+	for i in 2:
+		if area.size[i] < view[i]:
+			rect.position[i] = area.get_center()[i] - view[i] / 2
+			rect.size[i] = view[i]
 	camera.limit_left = floori(rect.position.x)
 	camera.limit_top = floori(rect.position.y)
 	camera.limit_right = ceili(rect.end.x)
